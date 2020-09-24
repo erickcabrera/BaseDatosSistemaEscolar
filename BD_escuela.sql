@@ -50,7 +50,7 @@ create table Profesor
 	telefonoProfesor varchar(10) not null,
 	correoProfesor varchar(150) not null,
 	fechaNacProfesor date not null,
-	--fotoPerfilProfesor varchar(200) not null,
+	fotoPerfilProfesor varchar(200) not null,
 	numeroEscalafon varchar(20) not null,
 	id_Nivel int not null,
 	id_Sexo int not null,
@@ -62,7 +62,7 @@ create table Profesor
 	CONSTRAINT fk_profesor_sexo FOREIGN KEY(id_Nivel) REFERENCES Sexo(id_Sexo),
 	CONSTRAINT fk_profesor_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','555',1,1,1)
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','ruta','555',1,1,1)
 
 --TABLA USUARIO
 CREATE TABLE Usuario
@@ -171,6 +171,7 @@ create table Curso
 );
 
 --CONSTRAINTS EN LA TABLA ALUMNO
+--Sería mejor hacer las restricciones directamente en las tablas
 ALTER TABLE Alumno
 ADD CONSTRAINT U_numPartida UNIQUE (numPartida)
 

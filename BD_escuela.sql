@@ -3,7 +3,6 @@ USE MASTER
 CREATE DATABASE BD_escuela
 USE BD_escuela
 GO
-
 --CREANDO TABLAS
 
 --TABLA ESTADO
@@ -62,8 +61,10 @@ create table Profesor
 	CONSTRAINT fk_profesor_sexo FOREIGN KEY(id_Nivel) REFERENCES Sexo(id_Sexo),
 	CONSTRAINT fk_profesor_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','ruta','555',1,1,1)
 
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','ruta','555',1,1,1);
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','ruta','444',2,1,1)
+select * from profesor	
 --TABLA USUARIO
 CREATE TABLE Usuario
 (
@@ -75,8 +76,9 @@ CREATE TABLE Usuario
 	CONSTRAINT pk_Usuario PRIMARY KEY(id_Usuario)
 );
 INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST('admin' AS VARBINARY(MAX)),CAST('123' AS VARBINARY(MAX)),1)
+INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST('profesor' AS VARBINARY(MAX)),CAST('123' AS VARBINARY(MAX)),2)
 
-
+select * from Usuario
 --TABLA ALUMNO
 create table Alumno
 (
@@ -180,12 +182,12 @@ ADD CONSTRAINT U_NIE UNIQUE (NIE)
 
 ALTER TABLE Alumno
 	ADD CONSTRAINT CK_fechaNac
-	CHECK (fechaNac<getdate());
+	CHECK (fechaNacAlumno<getdate());
 	GO
 
 ALTER TABLE Alumno
 ADD CONSTRAINT CK_edad
-CHECK (edad>=4)
+CHECK (edadAlumno>=4)
 
 
 
@@ -214,7 +216,7 @@ create proc ps_mostrar_nivel_usuario
 as
 begin try
 begin tran
-SELECT id_Nivel, P.id_Profesor,P.nombre FROM Profesor P 
+SELECT id_Nivel, P.id_Profesor,P.nombreProfesor FROM Profesor P 
 INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
 WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
 commit
@@ -250,7 +252,7 @@ create proc ps_mostrar_nombre_profesor
 as
 begin try
 begin tran
-SELECT P.nombre FROM Profesor P 
+SELECT P.nombreProfesor FROM Profesor P 
 INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
 WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
 commit

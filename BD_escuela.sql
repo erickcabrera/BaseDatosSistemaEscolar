@@ -62,9 +62,11 @@ create table Profesor
 	CONSTRAINT fk_profesor_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
 
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','ruta','555',1,1,1);
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','ruta','444',2,1,1)
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','555',1,1,1);
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','fotosUsuarios\\PedroDiaz11425.png','444',2,1,1)
 select * from profesor	
+
+
 --TABLA USUARIO
 CREATE TABLE Usuario
 (
@@ -252,7 +254,25 @@ create proc ps_mostrar_nombre_profesor
 as
 begin try
 begin tran
-SELECT P.nombreProfesor FROM Profesor P 
+SELECT P.nombreProfesor, P.apellidoProfesor FROM Profesor P 
+INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
+WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar FotoProfesor
+create proc ps_mostrar_foto_profesor
+(@usuario varchar(100),
+@contra varchar(100))
+as
+begin try
+begin tran
+SELECT P.fotoPerfilProfesor FROM Profesor P 
 INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
 WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
 commit

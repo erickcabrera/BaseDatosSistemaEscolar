@@ -106,6 +106,8 @@ create table Alumno
 	CONSTRAINT fk_alumno_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
 
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','555',1,1,1);
+
 --TABLA MATERIA
 create table Materia
 (
@@ -275,6 +277,20 @@ begin tran
 SELECT P.fotoPerfilProfesor FROM Profesor P 
 INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
 WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar Alumnos
+create proc ps_mostrar_alumnos
+as
+begin try
+begin tran
+SELECT * FROM Alumno
 commit
 end try
 begin catch

@@ -298,3 +298,82 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Insertar grado
+create proc ps_insertar_grado
+@nombreGrado varchar(20)
+as
+begin try
+begin tran
+	INSERT INTO grado (nombreGrado) VALUES(@nombreGrado)
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+
+--Modificar grado
+create proc ps_modificar_grado
+(@idGrado int, 
+@nombreGrado varchar(20))
+as
+begin try
+begin tran
+	update grado set nombreGrado=@nombreGrado
+	where id_Grado=@idGrado
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Eliminar grado
+create proc ps_eliminar_grado
+@idGrado int
+as
+begin try
+begin tran
+	delete from grado where id_Grado=@idGrado
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar Grados
+create proc ps_mostrar_grados
+as
+begin try
+begin tran
+SELECT id_Grado as [Num], nombreGrado as [Grado] FROM Grado
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar Grados
+create proc ps_buscar_grados
+@nombreGrado varchar(20)
+as
+begin try
+begin tran
+SELECT id_Grado as [Num], nombreGrado as [Grado] FROM Grado
+WHERE nombreGrado LIKE ('%'+@nombreGrado+'%')
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+

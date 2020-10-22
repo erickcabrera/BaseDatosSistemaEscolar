@@ -377,3 +377,79 @@ print error_message()
 end catch;
 GO
 
+--SECCIONES
+--Insertar una seccion
+create proc ps_insertar_seccion
+@nombreSeccion varchar(20)
+as
+begin try
+begin tran
+	INSERT INTO Seccion (Seccion) VALUES(@nombreSeccion)
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Modificar seccion
+create proc ps_modificar_seccion
+(@idSeccion int, 
+@nombreSeccion varchar(20))
+as
+begin try
+begin tran
+	update Seccion set Seccion=@nombreSeccion
+	where id_Seccion=@idSeccion
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Eliminar seccion
+create proc ps_eliminar_seccion
+@idSeccion int
+as
+begin try
+begin tran
+	delete from Seccion where id_Seccion =@idSeccion
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar secciones
+create proc ps_mostrar_secciones
+as
+begin try
+begin tran
+SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar Secciones
+create proc ps_buscar_secciones
+@nombreSeccion varchar(20)
+as
+begin try
+begin tran
+SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
+WHERE Seccion LIKE ('%'+@nombreSeccion+'%')
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

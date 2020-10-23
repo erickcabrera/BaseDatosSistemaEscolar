@@ -3,6 +3,7 @@ USE MASTER
 CREATE DATABASE BD_escuela
 USE BD_escuela
 GO
+
 --CREANDO TABLAS
 
 --TABLA ESTADO
@@ -446,6 +447,22 @@ begin try
 begin tran
 SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
 WHERE Seccion LIKE ('%'+@nombreSeccion+'%')
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+
+--Crear Materia
+create proc ps_insertar_materia
+@nombreMateria varchar(20)
+as 
+begin try
+begin tran
+INSERT INTO materia(nombreMateria) VALUES (@nombreMateria)
 commit
 end try
 begin catch

@@ -485,3 +485,20 @@ rollback
 print error_message()
 end catch;
 GO
+
+
+--Modificar materias
+create proc ps_modificar_materia
+(@idMateria int, 
+@nombreMateria varchar(20))
+as
+begin try
+begin tran
+	update Materia set nombreMateria=@nombreMateria where id_Materia=@idMateria
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

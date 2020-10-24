@@ -470,3 +470,18 @@ rollback
 print error_message()
 end catch;
 GO
+
+
+
+--Mostrar materias
+create proc ps_mostrar_materias
+as
+begin try
+begin tran
+SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

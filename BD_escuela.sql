@@ -3,7 +3,6 @@ USE MASTER
 CREATE DATABASE BD_escuela
 USE BD_escuela
 GO
-
 --CREANDO TABLAS
 
 --TABLA ESTADO
@@ -469,21 +468,19 @@ print error_message()
 end catch;
 GO
 
-
-
 --Mostrar materias
 create proc ps_mostrar_materia
 as
 begin try
 begin tran
 SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia
+commit
 end try
 begin catch
 rollback
 print error_message()
 end catch;
 GO
-
 
 --Modificar materias
 create proc ps_modificar_materia

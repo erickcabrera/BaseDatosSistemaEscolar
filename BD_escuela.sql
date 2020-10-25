@@ -502,3 +502,36 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Eliminar materia
+create proc ps_eliminar_materia
+@idMateria int
+as
+begin try
+begin tran
+	delete from Materia where id_Materia = @idMateria
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+select * from materia
+
+--Mostrar Secciones
+create proc ps_buscar_materia
+@nombreMateria varchar(20)
+as
+begin try
+begin tran
+SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia WHERE nombreMateria LIKE ('%'+@nombreMateria+'%')
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+

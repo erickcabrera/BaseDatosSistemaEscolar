@@ -472,7 +472,7 @@ GO
 
 
 --Mostrar materias
-create proc ps_mostrar_materias
+create proc ps_mostrar_materia
 as
 begin try
 begin tran

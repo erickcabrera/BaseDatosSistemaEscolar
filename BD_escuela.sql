@@ -428,7 +428,8 @@ create proc ps_mostrar_secciones
 as
 begin try
 begin tran
-SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
+	SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
+commit
 end try
 begin catch
 rollback

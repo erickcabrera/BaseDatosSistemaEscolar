@@ -529,3 +529,39 @@ print error_message()
 end catch;
 GO
 
+--Insertar Profesor
+create proc ps_insertar_profesor
+(@dui varchar(20),
+@nit varchar(20),
+@nombreProfesor varchar(50),
+@apellidoProfesor varchar(50),
+@direccionProfesor varchar(100),
+@telefonoProfesor varchar(10),
+@correoProfesor varchar(150),
+@fechaNacProfesor date,
+@fotoPerfilProfesor varchar(200),
+@numeroEscalafon varchar(20),
+@sexo varchar(20))
+as 
+begin try
+begin tran
+	INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado)
+	VALUES(@dui,@nit,@nombreProfesor,@apellidoProfesor,(select (cast(datediff(dd,@fechaNacProfesor,GETDATE()) / 365.25 as int))),@direccionProfesor,@telefonoProfesor,@correoProfesor,@fechaNacProfesor,@fotoPerfilProfesor,@numeroEscalafon,2, CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo)) ,1);
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--TRIGGER Crear usuario al insertar profesor
+CREATE TRIGGER trg_nuevo_usuario
+ON Profesor
+AFTER INSERT
+AS
+	IF EXISTS(SELECT * FROM inserted)
+	BEGIN
+	INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST((SELECT i.nombreProfesor FROM inserted i) AS VARBINARY(MAX)),CAST((SELECT i.numeroEscalafon FROM inserted i) AS VARBINARY(MAX)),(SELECT i.id_Profesor FROM inserted i))
+	END
+GO

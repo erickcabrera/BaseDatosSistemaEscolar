@@ -582,3 +582,20 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Extraer foto de profesor con ID
+create proc ps_extraer_foto_profesor
+@idProfesor varchar(20)
+as
+begin try
+begin tran
+	SELECT fotoPerfilProfesor FROM Profesor
+	WHERE id_Profesor =  @idProfesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+

@@ -599,4 +599,3 @@ rollback
 print error_message()
 end catch;
 GO
-

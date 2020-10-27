@@ -575,6 +575,7 @@ begin tran
 	, telefonoProfesor as [Teléfono], correoProfesor as [Correo], DUI as [DUI], NIT as [NIT], numeroEscalafon as [Escalafon], direccionProfesor as [Dirección]
 	, S.nombreSexo as [Sexo], edadProfesor as [Edad] FROM Profesor P
 	INNER JOIN Sexo S ON S.id_Sexo = P.id_Sexo
+	WHERE id_Estado = 1
 commit
 end try
 begin catch

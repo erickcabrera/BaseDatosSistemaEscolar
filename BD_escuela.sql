@@ -565,3 +565,20 @@ AS
 	INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST((SELECT i.nombreProfesor FROM inserted i) AS VARBINARY(MAX)),CAST((SELECT i.numeroEscalafon FROM inserted i) AS VARBINARY(MAX)),(SELECT i.id_Profesor FROM inserted i))
 	END
 GO
+
+--Mostrar profesor
+create proc ps_mostrar_profesor
+as
+begin try
+begin tran
+	SELECT id_Profesor as [Num], nombreProfesor as [Nombres],apellidoProfesor as [Apellidos], fechaNacProfesor as [Fecha de nacimiento]
+	, telefonoProfesor as [Teléfono], correoProfesor as [Correo], DUI as [DUI], NIT as [NIT], numeroEscalafon as [Escalafon], direccionProfesor as [Dirección]
+	, S.nombreSexo as [Sexo], edadProfesor as [Edad] FROM Profesor P
+	INNER JOIN Sexo S ON S.id_Sexo = P.id_Sexo
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

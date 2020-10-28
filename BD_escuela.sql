@@ -635,3 +635,32 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Modificar profesores
+create proc ps_modificar_profesor
+(@idProfesor int,
+@dui varchar(20),
+@nit varchar(20),
+@nombreProfesor varchar(50),
+@apellidoProfesor varchar(50),
+@direccionProfesor varchar(100),
+@telefonoProfesor varchar(10),
+@correoProfesor varchar(150),
+@fechaNacProfesor date,
+@fotoPerfilProfesor varchar(200),
+@numeroEscalafon varchar(20),
+@sexo varchar(20))
+as
+begin try
+begin tran
+	update Profesor set DUI=@dui,NIT=@nit,nombreProfesor=@nombreProfesor,apellidoProfesor=@apellidoProfesor, edadProfesor = (select (cast(datediff(dd,@fechaNacProfesor,GETDATE()) / 365.25 as int))),
+	direccionProfesor=@direccionProfesor, telefonoProfesor=@telefonoProfesor,correoProfesor=@correoProfesor,fechaNacProfesor=@fechaNacProfesor,fotoPerfilProfesor=@fotoPerfilProfesor,numeroEscalafon=@numeroEscalafon,
+	id_Sexo=CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo))
+	where id_Profesor = @idProfesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

@@ -520,7 +520,7 @@ create proc ps_buscar_materia
 as
 begin try
 begin tran
-SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia WHERE nombreMateria LIKE ('%'+@nombreMateria+'%')
+	SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia WHERE nombreMateria LIKE ('%'+@nombreMateria+'%')
 commit
 end try
 begin catch
@@ -592,6 +592,42 @@ begin try
 begin tran
 	SELECT fotoPerfilProfesor FROM Profesor
 	WHERE id_Profesor =  @idProfesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Eliminar profesor
+create proc ps_eliminar_profesor
+@idProfesor int
+as
+begin try
+begin tran
+	update Profesor set id_Estado = 2  where id_Profesor = @idProfesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Buscar Profesores
+create proc ps_buscar_profesores
+@filtro varchar(200)
+as
+begin try
+begin tran
+	SELECT id_Profesor as [Num], nombreProfesor as [Nombres],apellidoProfesor as [Apellidos], fechaNacProfesor as [Fecha de nacimiento]
+	, telefonoProfesor as [Teléfono], correoProfesor as [Correo], DUI as [DUI], NIT as [NIT], numeroEscalafon as [Escalafon], direccionProfesor as [Dirección]
+	, S.nombreSexo as [Sexo], edadProfesor as [Edad] FROM Profesor P
+	INNER JOIN Sexo S ON S.id_Sexo = P.id_Sexo
+	WHERE nombreProfesor LIKE ('%'+@filtro+'%') OR apellidoProfesor LIKE ('%'+@filtro+'%') OR fechaNacProfesor LIKE ('%'+@filtro+'%') OR telefonoProfesor LIKE ('%'+@filtro+'%') 
+	OR correoProfesor LIKE ('%'+@filtro+'%') OR DUI LIKE ('%'+@filtro+'%') OR NIT LIKE ('%'+@filtro+'%') OR numeroEscalafon LIKE ('%'+@filtro+'%') OR direccionProfesor LIKE ('%'+@filtro+'%')
+	OR S.nombreSexo LIKE ('%'+@filtro+'%')
 commit
 end try
 begin catch

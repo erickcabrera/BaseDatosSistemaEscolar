@@ -3,6 +3,7 @@ USE MASTER
 CREATE DATABASE BD_escuela
 USE BD_escuela
 GO
+
 --CREANDO TABLAS
 
 --TABLA ESTADO
@@ -105,6 +106,8 @@ create table Alumno
 	CONSTRAINT fk_alumno_sexo FOREIGN KEY(id_Sexo) REFERENCES Sexo(id_Sexo),
 	CONSTRAINT fk_alumno_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
+
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','555',1,1,1);
 
 --TABLA MATERIA
 create table Materia
@@ -428,8 +431,7 @@ create proc ps_mostrar_secciones
 as
 begin try
 begin tran
-	SELECT id_Seccion as [Num], Seccion as [Sección] FROM Seccion
-commit
+SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
 end try
 begin catch
 rollback
@@ -469,19 +471,21 @@ print error_message()
 end catch;
 GO
 
+
+
 --Mostrar materias
-create proc ps_mostrar_materia
+create proc ps_mostrar_materias
 as
 begin try
 begin tran
 SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia
-commit
 end try
 begin catch
 rollback
 print error_message()
 end catch;
 GO
+
 
 --Modificar materias
 create proc ps_modificar_materia
@@ -514,13 +518,15 @@ print error_message()
 end catch;
 GO
 
+select * from materia
+
 --Mostrar Secciones
 create proc ps_buscar_materia
 @nombreMateria varchar(20)
 as
 begin try
 begin tran
-	SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia WHERE nombreMateria LIKE ('%'+@nombreMateria+'%')
+SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia WHERE nombreMateria LIKE ('%'+@nombreMateria+'%')
 commit
 end try
 begin catch
@@ -529,53 +535,13 @@ print error_message()
 end catch;
 GO
 
---Insertar Profesor
-create proc ps_insertar_profesor
-(@dui varchar(20),
-@nit varchar(20),
-@nombreProfesor varchar(50),
-@apellidoProfesor varchar(50),
-@direccionProfesor varchar(100),
-@telefonoProfesor varchar(10),
-@correoProfesor varchar(150),
-@fechaNacProfesor date,
-@fotoPerfilProfesor varchar(200),
-@numeroEscalafon varchar(20),
-@sexo varchar(20))
-as 
-begin try
-begin tran
-	INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado)
-	VALUES(@dui,@nit,@nombreProfesor,@apellidoProfesor,(select (cast(datediff(dd,@fechaNacProfesor,GETDATE()) / 365.25 as int))),@direccionProfesor,@telefonoProfesor,@correoProfesor,@fechaNacProfesor,@fotoPerfilProfesor,@numeroEscalafon,2, CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo)) ,1);
-commit
-end try
-begin catch
-rollback
-print error_message()
-end catch;
-GO
 
---TRIGGER Crear usuario al insertar profesor
-CREATE TRIGGER trg_nuevo_usuario
-ON Profesor
-AFTER INSERT
-AS
-	IF EXISTS(SELECT * FROM inserted)
-	BEGIN
-	INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST((SELECT i.nombreProfesor FROM inserted i) AS VARBINARY(MAX)),CAST((SELECT i.numeroEscalafon FROM inserted i) AS VARBINARY(MAX)),(SELECT i.id_Profesor FROM inserted i))
-	END
-GO
-
---Mostrar profesor
-create proc ps_mostrar_profesor
+--Mostrar Alumnos
+create proc ps_mostrar_ma
 as
 begin try
 begin tran
-	SELECT id_Profesor as [Num], nombreProfesor as [Nombres],apellidoProfesor as [Apellidos], fechaNacProfesor as [Fecha de nacimiento]
-	, telefonoProfesor as [Teléfono], correoProfesor as [Correo], DUI as [DUI], NIT as [NIT], numeroEscalafon as [Escalafon], direccionProfesor as [Dirección]
-	, S.nombreSexo as [Sexo], edadProfesor as [Edad] FROM Profesor P
-	INNER JOIN Sexo S ON S.id_Sexo = P.id_Sexo
-	WHERE id_Estado = 1
+SELECT * FROM Alumno
 commit
 end try
 begin catch
@@ -584,14 +550,15 @@ print error_message()
 end catch;
 GO
 
---Extraer foto de profesor con ID
-create proc ps_extraer_foto_profesor
-@idProfesor varchar(20)
+select * from cursos
+
+
+--Mostrar profesores
+create proc ps_leer_profesores
 as
 begin try
 begin tran
-	SELECT fotoPerfilProfesor FROM Profesor
-	WHERE id_Profesor =  @idProfesor
+SELECT CONCAT(nombreProfesor,' ',apellidoProfesor) as Profesor FROM Profesor
 commit
 end try
 begin catch
@@ -600,13 +567,12 @@ print error_message()
 end catch;
 GO
 
---Eliminar profesor
-create proc ps_eliminar_profesor
-@idProfesor int
+--PS para leer detalles de grado
+create proc ps_leer_detalle_Grado
 as
 begin try
 begin tran
-	update Profesor set id_Estado = 2  where id_Profesor = @idProfesor
+select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
 commit
 end try
 begin catch
@@ -615,52 +581,11 @@ print error_message()
 end catch;
 GO
 
---Buscar Profesores
-create proc ps_buscar_profesores
-@filtro varchar(200)
-as
-begin try
-begin tran
-	SELECT id_Profesor as [Num], nombreProfesor as [Nombres],apellidoProfesor as [Apellidos], fechaNacProfesor as [Fecha de nacimiento]
-	, telefonoProfesor as [Teléfono], correoProfesor as [Correo], DUI as [DUI], NIT as [NIT], numeroEscalafon as [Escalafon], direccionProfesor as [Dirección]
-	, S.nombreSexo as [Sexo], edadProfesor as [Edad] FROM Profesor P
-	INNER JOIN Sexo S ON S.id_Sexo = P.id_Sexo
-	WHERE nombreProfesor LIKE ('%'+@filtro+'%') OR apellidoProfesor LIKE ('%'+@filtro+'%') OR fechaNacProfesor LIKE ('%'+@filtro+'%') OR telefonoProfesor LIKE ('%'+@filtro+'%') 
-	OR correoProfesor LIKE ('%'+@filtro+'%') OR DUI LIKE ('%'+@filtro+'%') OR NIT LIKE ('%'+@filtro+'%') OR numeroEscalafon LIKE ('%'+@filtro+'%') OR direccionProfesor LIKE ('%'+@filtro+'%')
-	OR S.nombreSexo LIKE ('%'+@filtro+'%')
-commit
-end try
-begin catch
-rollback
-print error_message()
-end catch;
-GO
 
---Modificar profesores
-create proc ps_modificar_profesor
-(@idProfesor int,
-@dui varchar(20),
-@nit varchar(20),
-@nombreProfesor varchar(50),
-@apellidoProfesor varchar(50),
-@direccionProfesor varchar(100),
-@telefonoProfesor varchar(10),
-@correoProfesor varchar(150),
-@fechaNacProfesor date,
-@fotoPerfilProfesor varchar(200),
-@numeroEscalafon varchar(20),
-@sexo varchar(20))
-as
-begin try
-begin tran
-	update Profesor set DUI=@dui,NIT=@nit,nombreProfesor=@nombreProfesor,apellidoProfesor=@apellidoProfesor, edadProfesor = (select (cast(datediff(dd,@fechaNacProfesor,GETDATE()) / 365.25 as int))),
-	direccionProfesor=@direccionProfesor, telefonoProfesor=@telefonoProfesor,correoProfesor=@correoProfesor,fechaNacProfesor=@fechaNacProfesor,fotoPerfilProfesor=@fotoPerfilProfesor,numeroEscalafon=@numeroEscalafon,
-	id_Sexo=CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo))
-	where id_Profesor = @idProfesor
-commit
-end try
-begin catch
-rollback
-print error_message()
-end catch;
-GO
+/*select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
+select * from grado
+select * from seccion
+select * from Profesor
+select * from Detalle_Grado_Seccion
+select * from curso
+insert into Detalle_Grado_Seccion(id_Grado, id_Seccion, id_ProfesorEncargado,anioEscolar) values(1,1,1,'2019')*/

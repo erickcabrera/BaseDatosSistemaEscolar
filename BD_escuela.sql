@@ -664,3 +664,21 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Mostrar Grupo
+create proc ps_mostrar_grupo
+(
+@id_Profesor int
+)
+as
+begin try
+begin tran
+SELECT CONCAT(g.nombreGrado,  ' ', s.id_Seccion) as Grupo FROM Detalle_Grado_Seccion AS dt  INNER JOIN Grado AS g on  dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion INNER JOIN Profesor AS p on dt.id_ProfesorEncargado=p.id_Profesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+

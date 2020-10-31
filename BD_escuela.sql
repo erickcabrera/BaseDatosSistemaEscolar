@@ -626,14 +626,21 @@ print error_message()
 end catch;
 GO
 
+create proc ps_mostrar_grupos
+(
+@id_Profesor int
+)
+as
+begin try
+begin tran
+SELECT CONCAT(g.nombreGrado,' ', s.Seccion) as Grupo from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
 
-/*select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
-select * from grado
-select * from seccion
-select * from Profesor
-select * from Detalle_Grado_Seccion
-select * from curso
-insert into Detalle_Grado_Seccion(id_Grado, id_Seccion, id_ProfesorEncargado,anioEscolar) values(1,1,1,'2019')*/
 
 /*select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
 select * from grado

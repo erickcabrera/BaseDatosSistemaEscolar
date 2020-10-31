@@ -713,7 +713,7 @@ create proc ps_mostrar_alumnos_curso
 as
 begin try
 begin tran
-Select CONCAT(a.nombreAlumno,' ', a.apellidoAlumno) as [Nombre del alumno] from Registro_Alumno as ra
+Select CONCAT(a.nombreAlumno,' ', a.apellidoAlumno) as [Nombre del alumno], a.edadAlumno as Edad, a.NIE ad NIE, a.telefonoAlumno as [Telefono] from Registro_Alumno as ra
 INNER JOIN Alumno as a ON ra.id_Alumno=a.id_Alumno
 INNER JOIN Detalle_Grado_Seccion as dt ON ra.id_Detalle_Grado_Seccion=dt.id_Detalle_Grado_Seccion WHERE dt.id_Detalle_Grado_Seccion=@grupo
 commit

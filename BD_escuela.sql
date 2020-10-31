@@ -721,3 +721,120 @@ rollback
 print error_message()
 end catch;
 GO
+create proc ps_modificar_profesor
+(@idProfesor int,
+@dui varchar(20),
+@nit varchar(20),
+@nombreProfesor varchar(50),
+@apellidoProfesor varchar(50),
+@direccionProfesor varchar(100),
+@telefonoProfesor varchar(10),
+@correoProfesor varchar(150),
+@fechaNacProfesor date,
+@fotoPerfilProfesor varchar(200),
+@numeroEscalafon varchar(20),
+@sexo varchar(20))
+as
+begin try
+begin tran
+	update Profesor set DUI=@dui,NIT=@nit,nombreProfesor=@nombreProfesor,apellidoProfesor=@apellidoProfesor, edadProfesor = (select (cast(datediff(dd,@fechaNacProfesor,GETDATE()) / 365.25 as int))),
+	direccionProfesor=@direccionProfesor, telefonoProfesor=@telefonoProfesor,correoProfesor=@correoProfesor,fechaNacProfesor=@fechaNacProfesor,fotoPerfilProfesor=@fotoPerfilProfesor,numeroEscalafon=@numeroEscalafon,
+	id_Sexo=CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo))
+	where id_Profesor = @idProfesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Eliminar profesor
+create proc ps_eliminar_profesor
+@idProfesor int
+as
+begin try
+begin tran
+	update Profesor set id_Estado = 2  where id_Profesor = @idProfesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Buscar Profesores
+create proc ps_buscar_profesores
+@filtro varchar(200)
+as
+begin try
+begin tran
+	SELECT id_Profesor as [Num], nombreProfesor as [Nombres],apellidoProfesor as [Apellidos], fechaNacProfesor as [Fecha de nacimiento]
+	, telefonoProfesor as [Teléfono], correoProfesor as [Correo], DUI as [DUI], NIT as [NIT], numeroEscalafon as [Escalafon], direccionProfesor as [Dirección]
+	, S.nombreSexo as [Sexo], edadProfesor as [Edad] FROM Profesor P
+	INNER JOIN Sexo S ON S.id_Sexo = P.id_Sexo
+	WHERE nombreProfesor LIKE ('%'+@filtro+'%') OR apellidoProfesor LIKE ('%'+@filtro+'%') OR fechaNacProfesor LIKE ('%'+@filtro+'%') OR telefonoProfesor LIKE ('%'+@filtro+'%') 
+	OR correoProfesor LIKE ('%'+@filtro+'%') OR DUI LIKE ('%'+@filtro+'%') OR NIT LIKE ('%'+@filtro+'%') OR numeroEscalafon LIKE ('%'+@filtro+'%') OR direccionProfesor LIKE ('%'+@filtro+'%')
+	OR S.nombreSexo LIKE ('%'+@filtro+'%')
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar profesores
+create proc ps_mostrar_profesor
+as
+begin try
+begin tran
+	SELECT id_Profesor as [Num], nombreProfesor as [Nombres],apellidoProfesor as [Apellidos], fechaNacProfesor as [Fecha de nacimiento]
+	, telefonoProfesor as [Teléfono], correoProfesor as [Correo], DUI as [DUI], NIT as [NIT], numeroEscalafon as [Escalafon], direccionProfesor as [Dirección]
+	, S.nombreSexo as [Sexo], edadProfesor as [Edad] FROM Profesor P
+	INNER JOIN Sexo S ON S.id_Sexo = P.id_Sexo
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Insertar Profesores
+create proc ps_insertar_profesor
+(@dui varchar(20),
+@nit varchar(20),
+@nombreProfesor varchar(50),
+@apellidoProfesor varchar(50),
+@direccionProfesor varchar(100),
+@telefonoProfesor varchar(10),
+@correoProfesor varchar(150),
+@fechaNacProfesor date,
+@fotoPerfilProfesor varchar(200),
+@numeroEscalafon varchar(20),
+@sexo varchar(20))
+as 
+begin try
+begin tran
+	INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado)
+	VALUES(@dui,@nit,@nombreProfesor,@apellidoProfesor,(select (cast(datediff(dd,@fechaNacProfesor,GETDATE()) / 365.25 as int))),@direccionProfesor,@telefonoProfesor,@correoProfesor,@fechaNacProfesor,@fotoPerfilProfesor,@numeroEscalafon,2, CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo)) ,1);
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--TRIGGER Crear usuario al insertar profesor
+CREATE TRIGGER trg_nuevo_usuario
+ON Profesor
+AFTER INSERT
+AS
+	IF EXISTS(SELECT * FROM inserted)
+	BEGIN
+	INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST((SELECT i.nombreProfesor FROM inserted i) AS VARBINARY(MAX)),CAST((SELECT i.numeroEscalafon FROM inserted i) AS VARBINARY(MAX)),(SELECT i.id_Profesor FROM inserted i))
+	END
+GO

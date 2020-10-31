@@ -704,3 +704,20 @@ rollback
 print error_message()
 end catch;
 GO
+
+----ps para obtener los alumnos de un grupo
+create proc ps_mostrar_alumnos_curso
+@grupo varchar (10)
+as
+begin try
+begin tran
+Select CONCAT(a.nombreAlumno,' ', a.apellidoAlumno) as [Nombre del alumno] from Registro_Alumno as ra
+INNER JOIN Alumno as a ON ra.id_Alumno=a.id_Alumno
+INNER JOIN Detalle_Grado_Seccion as dt ON ra.id_Detalle_Grado_Seccion=dt.id_Detalle_Grado_Seccion WHERE dt.id_Detalle_Grado_Seccion=@grupo
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

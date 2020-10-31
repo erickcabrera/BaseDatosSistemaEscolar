@@ -633,7 +633,7 @@ create proc ps_mostrar_grupos
 as
 begin try
 begin tran
-SELECT CONCAT(g.nombreGrado,' ', s.Seccion) as Grupo from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion
+SELECT CONCAT(g.nombreGrado,' ', s.Seccion) as Grupo from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion INNER JOIN Profesor as p on p.id_Profesor=dt.id_ProfesorEncargado WHERE id_Profesor=@id_Profesor
 end try
 begin catch
 rollback

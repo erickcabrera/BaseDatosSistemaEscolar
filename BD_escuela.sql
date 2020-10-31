@@ -687,9 +687,11 @@ select * from seccion
 select * from Profesor
 select * from Detalle_Grado_Seccion
 select * from curso
+
 insert into Detalle_Grado_Seccion(id_Grado, id_Seccion, id_ProfesorEncargado,anioEscolar) values(1,1,1,'2019')*/
 
-create proc ps_insertar_curso
+--SELECT id_Detalle_Grado_Seccion as Codigo FROM Detalle_Grado_Seccion d, Grado g, Seccion s WHERE g.id_Grado = d.id_Grado AND s.id_Seccion = d.id_Seccion AND g.nombreGrado = 'SEPTIMO' AND  s.Seccion = 'A'
+ create proc ps_insertar_curso
 @idDetalle int,
 @idMateria int,
 @idProfesor int
@@ -840,3 +842,18 @@ AS
 	INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST((SELECT i.nombreProfesor FROM inserted i) AS VARBINARY(MAX)),CAST((SELECT i.numeroEscalafon FROM inserted i) AS VARBINARY(MAX)),(SELECT i.id_Profesor FROM inserted i))
 	END
 GO
+
+--Procedimiento para leer cursos
+create proc ps_leer_cursos
+as
+begin try
+begin tran
+SELECT c.id_Curso as Codigo_Curso, c.id_Detalle_Grado_Seccion as Codigo_Detalle, m.nombreMateria as Materia, CONCAT(p.nombreProfesor,' ',p.apellidoProfesor ) as Profesor FROM Curso c, Materia m, Profesor p WHERE m.id_Materia = c.id_Materia AND p.id_Profesor = c.id_Profesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+

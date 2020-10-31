@@ -644,11 +644,11 @@ select * from materia
 
 --ps para obtener un grupo
 create proc ps_mostrar_cursos
-@id_Profesor varchar(20)
+@id_Profesor int
 as
 begin try
 begin tran
-SELECT CONCAT(g.nombreGrado, '', s.Seccion) as Curso from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion WHERE id_ProfesorEncargado=@id_Profesor
+SELECT CONCAT(g.nombreGrado, ' ', s.Seccion) as Curso from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion WHERE id_ProfesorEncargado= @id_Profesor
 commit
 end try
 begin catch
@@ -656,7 +656,7 @@ rollback
 print error_message()
 end catch;
 GO
-
+ 
 --PS para obtener idProfesor 
 create proc ps_obtener_idProfesor
 @nombreProfesor varchar(20),

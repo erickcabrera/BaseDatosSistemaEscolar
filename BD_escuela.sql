@@ -581,6 +581,59 @@ print error_message()
 end catch;
 GO
 
+--Mostrar Alumnos
+create proc ps_mostrar_ma
+as
+begin try
+begin tran
+SELECT * FROM Alumno
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+select * from cursos
+
+
+--Mostrar profesores
+create proc ps_leer_profesores
+as
+begin try
+begin tran
+SELECT CONCAT(nombreProfesor,' ',apellidoProfesor) as Profesor FROM Profesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--PS para leer detalles de grado
+create proc ps_leer_detalle_Grado
+as
+begin try
+begin tran
+select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+
+/*select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
+select * from grado
+select * from seccion
+select * from Profesor
+select * from Detalle_Grado_Seccion
+select * from curso
+insert into Detalle_Grado_Seccion(id_Grado, id_Seccion, id_ProfesorEncargado,anioEscolar) values(1,1,1,'2019')*/
 
 /*select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
 select * from grado

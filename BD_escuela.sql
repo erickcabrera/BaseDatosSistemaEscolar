@@ -708,12 +708,13 @@ end catch;
 GO
 
 ----ps para obtener los alumnos de un grupo
-create proc ps_mostrar_alumnos_curso
-@grupo varchar (10)
+create proc ps_mostrar_alumnos_nombres
+@grupo int 
 as
 begin try
 begin tran
-Select CONCAT(a.nombreAlumno,' ', a.apellidoAlumno) as [Nombre del alumno], a.edadAlumno as Edad, a.NIE ad NIE, a.telefonoAlumno as [Telefono] from Registro_Alumno as ra
+Select a.nombreAlumno as [Nombres], a.apellidoAlumno as [Apellidos], a.edadAlumno as Edad, a.NIE as [NIE], a.telefonoAlumno as [Telefono], a.fechaNacAlumno as [Fecha de nacimiento], a.NombrePapaAlumno as [Padre], a.NombreMamaAlumno
+as [Madre], a.NombreEncargadoAlumno as [Encargado] from Registro_Alumno as ra
 INNER JOIN Alumno as a ON ra.id_Alumno=a.id_Alumno
 INNER JOIN Detalle_Grado_Seccion as dt ON ra.id_Detalle_Grado_Seccion=dt.id_Detalle_Grado_Seccion WHERE dt.id_Detalle_Grado_Seccion=@grupo
 commit
@@ -723,7 +724,21 @@ rollback
 print error_message()
 end catch;
 GO
-
+----ps para obtener el id de detalle grado-seccion
+create proc ps_mostrar_alumnos_curso
+@nombreGrado varchar(20),
+@nombreSeccion varchar(20)
+as
+begin try
+begin tran
+SELECT id_Detalle_Grado_Seccion as Codigo FROM Detalle_Grado_Seccion d, Grado g, Seccion s WHERE g.id_Grado = d.id_Grado AND s.id_Seccion = d.id_Seccion AND g.nombreGrado = @nombreGrado AND  s.Seccion = @nombreSeccion
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
 
 create proc ps_modificar_profesor
 (@idProfesor int,

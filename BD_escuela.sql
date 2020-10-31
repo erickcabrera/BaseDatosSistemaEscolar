@@ -648,7 +648,7 @@ create proc ps_mostrar_cursos
 as
 begin try
 begin tran
-SELECT CONCAT(g.nombreGrado, ' ', s.Seccion) as Curso from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion WHERE id_ProfesorEncargado= @id_Profesor
+SELECT CONCAT(g.nombreGrado, ' ', s.Seccion) as Curso, id_Detalle_Grado_Seccion from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion WHERE id_ProfesorEncargado= @id_Profesor
 commit
 end try
 begin catch
@@ -721,6 +721,8 @@ rollback
 print error_message()
 end catch;
 GO
+
+
 create proc ps_modificar_profesor
 (@idProfesor int,
 @dui varchar(20),

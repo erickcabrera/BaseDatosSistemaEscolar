@@ -688,3 +688,19 @@ select * from Profesor
 select * from Detalle_Grado_Seccion
 select * from curso
 insert into Detalle_Grado_Seccion(id_Grado, id_Seccion, id_ProfesorEncargado,anioEscolar) values(1,1,1,'2019')*/
+
+create proc ps_insertar_curso
+@idDetalle int,
+@idMateria int,
+@idProfesor int
+as
+begin try
+begin tran
+INSERT INTO Curso (id_Detalle_Grado_Seccion, Id_Materia, Id_profesor) VALUES (@idDetalle, @idMateria, @idProfesor)
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

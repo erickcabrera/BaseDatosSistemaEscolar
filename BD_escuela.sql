@@ -162,8 +162,9 @@ create table Detalle_Grado_Seccion
 
 INSERT INTO Detalle_Grado_Seccion(id_Grado,id_Seccion,id_ProfesorEncargado,anioEscolar) 
 VALUES(1,1,1,'2021'),(1,2,1,'2021'),(1,3,1,'2021'),
-(2,1,2,'2021'),(2,2,1,'2021'),(2,3,2,'2021'),
+(2,1,2,'2021'),(2,2,2,'2021'),(2,3,2,'2021'),
 (3,1,3,'2021'),(3,2,3,'2021'),(3,3,3,'2021');
+
 
 --TABLA REGISTRO_ALUMNO
 create table Registro_Alumno

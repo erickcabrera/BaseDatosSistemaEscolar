@@ -518,8 +518,6 @@ print error_message()
 end catch;
 GO
 
-select * from materia
-
 --Mostrar Secciones
 create proc ps_buscar_materia
 @nombreMateria varchar(20)
@@ -549,9 +547,6 @@ rollback
 print error_message()
 end catch;
 GO
-
-select * from cursos
-
 
 --Mostrar profesores
 create proc ps_leer_profesores
@@ -594,8 +589,6 @@ rollback
 print error_message()
 end catch;
 GO
-
-select * from cursos
 
 
 --Mostrar profesores
@@ -640,7 +633,6 @@ rollback
 print error_message()
 end catch;
 GO
-select * from materia
 
 --ps para obtener un grupo
 create proc ps_mostrar_cursos
@@ -740,6 +732,9 @@ print error_message()
 end catch;
 GO
 
+
+--PROCEDIMIENTOS ALMACENADOS PARA PROFESOR*****************************************
+--Modificar profesor
 create proc ps_modificar_profesor
 (@idProfesor int,
 @dui varchar(20),
@@ -847,6 +842,22 @@ print error_message()
 end catch;
 GO
 
+--Extraer foto de profesor con ID
+create proc ps_extraer_foto_profesor
+@idProfesor varchar(20)
+as
+begin try
+begin tran
+	SELECT fotoPerfilProfesor FROM Profesor
+	WHERE id_Profesor =  @idProfesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
 --TRIGGER Crear usuario al insertar profesor
 CREATE TRIGGER trg_nuevo_usuario
 ON Profesor
@@ -857,6 +868,7 @@ AS
 	INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST((SELECT i.nombreProfesor FROM inserted i) AS VARBINARY(MAX)),CAST((SELECT i.numeroEscalafon FROM inserted i) AS VARBINARY(MAX)),(SELECT i.id_Profesor FROM inserted i))
 	END
 GO
+--FIN PROCEDIMIENTOS ALMACENADOS PARA ALUMNO*****************************************
 
 --Procedimiento para leer cursos
 create proc ps_leer_cursos
@@ -951,3 +963,135 @@ rollback
 print error_message()
 end catch;
 GO
+
+--PROCEDIMIENTOS ALMACENADOS PARA ALUMNO*****************************************
+
+--Modificar Alumno
+create proc ps_modificar_alumno
+(@idAlumno int,
+@nombreAlumno varchar(50),
+@apellidoAlumno varchar(50),
+@numPartida varchar(20),
+@NIE varchar(20),
+@direccionAlumno varchar(100),
+@telefonoAlumno varchar(10),
+@fechaNacAlumno date,
+@fotoAlumno varchar(200),
+@NombrePapaAlumno varchar(100),
+@NombreMamaAlumno varchar(100),
+@NombreEncargadoAlumno varchar(100),
+@sexo varchar(20))
+as
+begin try
+begin tran
+	update Alumno set nombreAlumno=@nombreAlumno,apellidoAlumno=@apellidoAlumno,numPartida=@numPartida,NIE=@NIE, direccionAlumno = @direccionAlumno,
+	telefonoAlumno=@telefonoAlumno, fechaNacAlumno=@fechaNacAlumno,fotoAlumno=@fotoAlumno,NombrePapaAlumno=@NombrePapaAlumno,NombreMamaAlumno=@NombreMamaAlumno,NombreEncargadoAlumno=@NombreEncargadoAlumno,
+	id_Sexo=CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo)), edadAlumno = (select (cast(datediff(dd,@fechaNacAlumno,GETDATE()) / 365.25 as int)))
+	where id_Alumno = @idAlumno
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Eliminar Alumno
+create proc ps_eliminar_alumno
+@idAlumno int
+as
+begin try
+begin tran
+	update Alumno set id_Estado = 2  where id_Alumno = @idAlumno
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Buscar Alumno
+create proc ps_buscar_alumno
+@filtro varchar(200)
+as
+begin try
+begin tran
+	SELECT id_Alumno as [Num], nombreAlumno as [Nombres],apellidoAlumno as [Apellidos], fechaNacAlumno as [Fecha de nacimiento]
+	, telefonoAlumno as [Tel�fono], edadAlumno as [Edad], NIE as [NIE] , numPartida as [Num. Partida],  direccionAlumno as [Direcci�n]
+	, S.nombreSexo as [Sexo], NombrePapaAlumno as [Padre], NombrePapaAlumno as [Madre], NombreEncargadoAlumno as [Encargado] FROM Alumno A
+	INNER JOIN Sexo S ON S.id_Sexo = A.id_Sexo
+	WHERE ( nombreAlumno LIKE ('%'+@filtro+'%') OR apellidoAlumno LIKE ('%'+@filtro+'%') OR fechaNacAlumno LIKE ('%'+@filtro+'%') OR telefonoAlumno LIKE ('%'+@filtro+'%') 
+	OR NIE LIKE ('%'+@filtro+'%') OR numPartida LIKE ('%'+@filtro+'%') OR edadAlumno LIKE ('%'+@filtro+'%') OR NombrePapaAlumno LIKE ('%'+@filtro+'%') OR NombreMamaAlumno LIKE ('%'+@filtro+'%')
+	OR NombreEncargadoAlumno LIKE ('%'+@filtro+'%') OR direccionAlumno LIKE ('%'+@filtro+'%')
+	OR S.nombreSexo LIKE ('%'+@filtro+'%') ) AND id_Estado = 1
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar Alumno
+create proc ps_mostrar_alumno
+as
+begin try
+begin tran
+	SELECT id_Alumno as [Num], nombreAlumno as [Nombres],apellidoAlumno as [Apellidos], fechaNacAlumno as [Fecha de nacimiento]
+	, telefonoAlumno as [Tel�fono], edadAlumno as [Edad], NIE as [NIE] , numPartida as [Num. Partida],  direccionAlumno as [Direcci�n]
+	, S.nombreSexo as [Sexo], NombrePapaAlumno as [Padre], NombreMamaAlumno as [Madre], NombreEncargadoAlumno as [Encargado] FROM Alumno A
+	INNER JOIN Sexo S ON S.id_Sexo = A.id_Sexo
+	WHERE id_Estado = 1
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Insertar Alumno
+create proc ps_insertar_alumno
+(@nombreAlumno varchar(50),
+@apellidoAlumno varchar(50),
+@numPartida varchar(20),
+@NIE varchar(20),
+@direccionAlumno varchar(100),
+@telefonoAlumno varchar(10),
+@fechaNacAlumno date,
+@fotoAlumno varchar(200),
+@NombrePapaAlumno varchar(100),
+@NombreMamaAlumno varchar(100),
+@NombreEncargadoAlumno varchar(100),
+@sexo varchar(20))
+as 
+begin try
+begin tran
+	INSERT INTO Alumno(nombreAlumno,apellidoAlumno,numPartida,NIE,direccionAlumno,telefonoAlumno,fechaNacAlumno,fotoAlumno,NombrePapaAlumno,NombreMamaAlumno,NombreEncargadoAlumno,id_Sexo,edadAlumno, id_Estado)
+	VALUES(@nombreAlumno,@apellidoAlumno,@numPartida,@NIE,@direccionAlumno,@telefonoAlumno,@fechaNacAlumno,@fotoAlumno,@NombrePapaAlumno,@NombreMamaAlumno,@NombreEncargadoAlumno, 
+	CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo)),(select (cast(datediff(dd,@fechaNacAlumno,GETDATE()) / 365.25 as int))),1);
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Extraer foto de ALUMNO con ID
+create proc ps_extraer_foto_alumno
+@idAlumno varchar(20)
+as
+begin try
+begin tran
+	SELECT fotoAlumno FROM Alumno
+	WHERE id_Alumno =  @idAlumno
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+--FIN DE PROCEDIMIENTOS ALMACENADOS PARA ALUMNO*****************************************

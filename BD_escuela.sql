@@ -919,3 +919,35 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Procedimiento para eliminar cursos
+create proc ps_eliminar_curso
+@idCurso int 
+as
+begin try
+begin tran
+DELETE FROM Curso WHERE id_Curso = @idCurso
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Procedimiento para modificar cursos
+create proc ps_modificar_curso
+@idCurso int,
+@idMateria int,
+@idProfesor int
+as
+begin try
+begin tran
+UPDATE Curso  set id_Materia = @idMateria, id_Profesor = @idProfesor WHERE id_Curso = @idCurso
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

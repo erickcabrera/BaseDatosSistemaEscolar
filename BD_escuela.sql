@@ -65,6 +65,7 @@ create table Profesor
 
 INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','555',1,1,1);
 INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','fotosUsuarios\\PedroDiaz11425.png','444',2,1,1)
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('89789','11111','Juan','Perez',15,'San Salvador','45552','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','888',1,1,1);
 select * from profesor	
 
 
@@ -107,16 +108,17 @@ create table Alumno
 	CONSTRAINT fk_alumno_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
 
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('89789','11111','Juan','Perez',15,'San Salvador','45552','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','888',1,1,1);
-
 --TABLA MATERIA
 create table Materia
 (
 	id_Materia int IDENTITY(1,1),
-	nombreMateria varchar(20) not null,
+	nombreMateria varchar(100) not null,
 	--LLAVE PRIMARIA
 	CONSTRAINT pk_materia PRIMARY KEY(id_Materia)
 );
+INSERT INTO Materia(nombreMateria) 
+VALUES('Lenguaje y Literatura'),('Estudios Sociales'),('Matematicas'),('Ciencias y Medio Ambiente'),('Artistica'),('Educación Fisica'),('Moral y Civica'),('Ingles');
+select * from Materia
 
 --TABLA GRADO
 create table Grado
@@ -126,6 +128,9 @@ create table Grado
 	--LLAVE PRIMARIA
 	CONSTRAINT pk_grado PRIMARY KEY(id_Grado)
 );
+INSERT INTO Grado(nombreGrado) 
+VALUES('Parvularia'),('Primero'),('Segundo'),('Tercero'),('Cuarto'),('Quinto'),('Sexto'),('Septimo'),('Octavo'),('Noveno');
+select * from Grado
 
 --TABLA SECCION
 create table Seccion
@@ -135,6 +140,9 @@ create table Seccion
 	--LLAVE PRIMARIA
 	CONSTRAINT pk_seccion PRIMARY KEY(id_Seccion)
 );
+INSERT INTO Seccion(Seccion) 
+VALUES('A'),('B'),('C');
+select * from Seccion
 
 --TABLA Grupo
 create table Detalle_Grado_Seccion
@@ -151,6 +159,11 @@ create table Detalle_Grado_Seccion
 	CONSTRAINT fk_detalle_seccion FOREIGN KEY(id_Seccion) REFERENCES Seccion(id_Seccion),
 	CONSTRAINT fk_detalle_profesor FOREIGN KEY(id_ProfesorEncargado) REFERENCES Profesor(id_Profesor)
 );
+
+INSERT INTO Detalle_Grado_Seccion(id_Grado,id_Seccion,id_ProfesorEncargado,anioEscolar) 
+VALUES(1,1,1,'2021'),(1,2,1,'2021'),(1,3,1,'2021'),
+(2,1,2,'2021'),(2,2,1,'2021'),(2,3,2,'2021'),
+(3,1,3,'2021'),(3,2,3,'2021'),(3,3,3,'2021');
 
 --TABLA REGISTRO_ALUMNO
 create table Registro_Alumno
@@ -197,10 +210,10 @@ CHECK (edadAlumno>=4)
 
 
 --CONSTRAINTS TABLA DETALLE_GRADO_SECCION
-ALTER TABLE Detalle_Grado_Seccion
+/*ALTER TABLE Detalle_Grado_Seccion
 	ADD CONSTRAINT CK_anioEscolar
 	CHECK (anioEscolar<year(getdate()));
-	GO
+	GO*/
 
 --CONSTRAINTS EN LA TABLA PROFESOR
 ALTER TABLE Profesor

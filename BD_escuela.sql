@@ -872,3 +872,22 @@ print error_message()
 end catch;
 GO
 
+--Procedimiento para obtener los cursos de un profesor
+create proc ps_mostrar_cursos_profesor
+@id_Profesor int 
+as
+begin try
+begin tran
+select m.nombreMateria as [Materia],g.nombreGrado as [Grado], s.Seccion as [Sección] from Curso as C 
+INNER JOIN Materia as M on C.id_Materia=M.id_Materia 
+INNER JOIN Profesor as P on P.id_Profesor=C.id_Profesor
+INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Detalle_Grado_Seccion
+INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
+INNER JOIN Grado as G on dt.id_Grado=g.id_Grado WHERE p.id_Profesor=@id_Profesor
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

@@ -107,7 +107,7 @@ create table Alumno
 	CONSTRAINT fk_alumno_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
 
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','555',1,1,1);
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('89789','11111','Juan','Perez',15,'San Salvador','45552','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','888',1,1,1);
 
 --TABLA MATERIA
 create table Materia
@@ -576,48 +576,6 @@ print error_message()
 end catch;
 GO
 
---Mostrar Alumnos
-create proc ps_mostrar_ma
-as
-begin try
-begin tran
-SELECT * FROM Alumno
-commit
-end try
-begin catch
-rollback
-print error_message()
-end catch;
-GO
-
-
---Mostrar profesores
-create proc ps_leer_profesores
-as
-begin try
-begin tran
-SELECT CONCAT(nombreProfesor,' ',apellidoProfesor) as Profesor FROM Profesor
-commit
-end try
-begin catch
-rollback
-print error_message()
-end catch;
-GO
-
---PS para leer detalles de grado
-create proc ps_leer_detalle_Grado
-as
-begin try
-begin tran
-select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
-commit
-end try
-begin catch
-rollback
-print error_message()
-end catch;
-GO
 
 --PS para obtener idMateria 
 create proc ps_obtener_idMateria

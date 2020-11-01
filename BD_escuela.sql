@@ -976,7 +976,7 @@ as
 begin try
 begin tran
 	SELECT id_Alumno as [Num], nombreAlumno as [Nombres],apellidoAlumno as [Apellidos], fechaNacAlumno as [Fecha de nacimiento]
-	, telefonoAlumno as [Tel�fono], edadAlumno as [Edad], NIE as [NIE] , numPartida as [Num. Partida],  direccionAlumno as [Direcci�n]
+	, telefonoAlumno as [Telefono], edadAlumno as [Edad], NIE as [NIE] , numPartida as [Num. Partida],  direccionAlumno as [Direccion]
 	, S.nombreSexo as [Sexo], NombrePapaAlumno as [Padre], NombrePapaAlumno as [Madre], NombreEncargadoAlumno as [Encargado] FROM Alumno A
 	INNER JOIN Sexo S ON S.id_Sexo = A.id_Sexo
 	WHERE ( nombreAlumno LIKE ('%'+@filtro+'%') OR apellidoAlumno LIKE ('%'+@filtro+'%') OR fechaNacAlumno LIKE ('%'+@filtro+'%') OR telefonoAlumno LIKE ('%'+@filtro+'%') 
@@ -991,13 +991,14 @@ print error_message()
 end catch;
 GO
 
+
 --Mostrar Alumno
 create proc ps_mostrar_alumno
 as
 begin try
 begin tran
 	SELECT id_Alumno as [Num], nombreAlumno as [Nombres],apellidoAlumno as [Apellidos], fechaNacAlumno as [Fecha de nacimiento]
-	, telefonoAlumno as [Tel�fono], edadAlumno as [Edad], NIE as [NIE] , numPartida as [Num. Partida],  direccionAlumno as [Direcci�n]
+	, telefonoAlumno as [Telefono], edadAlumno as [Edad], NIE as [NIE] , numPartida as [Num. Partida],  direccionAlumno as [Direccion]
 	, S.nombreSexo as [Sexo], NombrePapaAlumno as [Padre], NombreMamaAlumno as [Madre], NombreEncargadoAlumno as [Encargado] FROM Alumno A
 	INNER JOIN Sexo S ON S.id_Sexo = A.id_Sexo
 	WHERE id_Estado = 1

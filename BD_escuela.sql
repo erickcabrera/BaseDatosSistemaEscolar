@@ -1075,7 +1075,7 @@ create proc ps_leer_detalle_Grado_Seccion
 as
 begin try
 begin tran
-	SELECT g.nombreGrado as Grado, s.Seccion as Seccion, CONCAT(p.nombreProfesor,' ',p.apellidoProfesor ) as Profesor_Encargado, d.anioEscolar as Año
+	SELECT d.id_Detalle_Grado_Seccion as Codigo_Grupo ,g.nombreGrado as Grado, s.Seccion as Seccion, CONCAT(p.nombreProfesor,' ',p.apellidoProfesor ) as Profesor_Encargado, d.anioEscolar as Año
 	FROM Grado g, Seccion s, Profesor p, detalle_grado_seccion d
 	WHERE g.id_Grado = d.id_Grado AND s.id_Seccion =d.id_Seccion AND p.id_Profesor = d.id_ProfesorEncargado
 commit
@@ -1120,6 +1120,55 @@ as
 begin try
 begin tran
 	SELECT CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor FROM Profesor p
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Obtener id Seccion
+create proc ps_obtener_idSeccion
+@seccion varchar(20)
+as
+begin try
+begin tran
+	SELECT id_seccion as Codigo FROM Seccion WHERE Seccion = @seccion
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Obtener id grado
+create proc ps_obtener_idGrado
+@grado varchar(20)
+as
+begin try
+begin tran
+	SELECT id_Grado as Grado FROM Grado WHERE nombreGrado = @grado
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+select * from detalle_grado_seccion
+
+--Insertar detalle grado seccion
+create proc ps_insertar_detalle_grado
+@idGrado int,
+@idSeccion int,
+@idProfesor int,
+@anio varchar(20)
+as
+begin try
+begin tran
+	INSERT INTO detalle_grado_seccion (id_Grado,id_Seccion, id_ProfesorEncargado, anioEscolar) VALUES (@idGrado, @idSeccion,@idProfesor, @anio)
 commit
 end try
 begin catch

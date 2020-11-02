@@ -1069,3 +1069,19 @@ print error_message()
 end catch;
 GO
 --FIN DE PROCEDIMIENTOS ALMACENADOS PARA ALUMNO*****************************************
+
+--Leer detalle de grados y secciones
+create proc ps_leer_detalle_Grado_Seccion
+as
+begin try
+begin tran
+	SELECT g.nombreGrado as Grado, s.Seccion as Seccion, CONCAT(p.nombreProfesor,' ',p.apellidoProfesor ) as Profesor_Encargado, d.anioEscolar as Año
+	FROM Grado g, Seccion s, Profesor p, detalle_grado_seccion d
+	WHERE g.id_Grado = d.id_Grado AND s.id_Seccion =d.id_Seccion AND p.id_Profesor = d.id_ProfesorEncargado
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

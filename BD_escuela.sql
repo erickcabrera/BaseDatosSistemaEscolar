@@ -858,7 +858,8 @@ GO
 
 --Procedimiento para obtener los cursos de un profesor
 create proc ps_mostrar_cursos_profesor
-@id_Profesor int 
+@id_Profesor int,
+@anio int
 as
 begin try
 begin tran
@@ -870,7 +871,7 @@ INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Deta
 INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
 INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
 INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Alumno
-WHERE p.id_Profesor=@id_Profesor  Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
+WHERE p.id_Profesor=@id_Profesor and anioEscolar=@anio Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
 
 commit
 end try
@@ -895,7 +896,7 @@ INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Deta
 INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
 INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
 INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Alumno
-WHERE p.id_Profesor=@idprofesor and nombreGrado LIKE ('%'+@nombreGrado+'%')  Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
+WHERE p.id_Profesor=@idprofesor and nombreGrado LIKE ('%'+@nombreGrado+'%') Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
 commit
 end try
 begin catch

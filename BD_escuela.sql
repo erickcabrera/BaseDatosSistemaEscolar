@@ -1176,3 +1176,41 @@ rollback
 print error_message()
 end catch;
 GO
+
+
+--Eliminar detalle grado seccion
+create proc ps_eliminar_grupo
+@idGrupo int
+as
+begin try
+begin tran
+	DELETE FROM Detalle_Grado_Seccion WHERE id_Detalle_Grado_Seccion = @idGrupo
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--modificar detalle grado seccion
+create proc ps_modificar_grupo
+@idGrupo int,
+@idGrado int,
+@idSeccion int,
+@idProfesor int,
+@anio varchar(20)
+as
+begin try
+begin tran
+	UPDATE Detalle_Grado_Seccion 
+	SET id_Grado = @idGrado, id_Seccion = @idSeccion, id_ProfesorEncargado = @idProfesor, anioEscolar = @anio 
+	WHERE id_detalle_Grado_Seccion = @idGrupo
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+

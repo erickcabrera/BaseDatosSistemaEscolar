@@ -1085,3 +1085,45 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Leer grados
+create proc ps_leer_Grados
+as
+begin try
+begin tran
+	SELECT nombreGrado as Grado FROM Grado
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Leer Secciones
+create proc ps_leer_Secciones
+as
+begin try
+begin tran
+	SELECT Seccion as Seccion FROM Seccion
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Leer Secciones
+create proc ps_leer_nombre_Profesores
+as
+begin try
+begin tran
+	SELECT CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor FROM Profesor p
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO

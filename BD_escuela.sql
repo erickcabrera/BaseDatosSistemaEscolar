@@ -1157,7 +1157,7 @@ rollback
 print error_message()
 end catch;
 GO
-select * from detalle_grado_seccion
+
 
 --Insertar detalle grado seccion
 create proc ps_insertar_detalle_grado

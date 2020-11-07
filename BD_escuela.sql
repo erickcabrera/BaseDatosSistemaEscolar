@@ -239,9 +239,9 @@ create proc ps_mostrar_nivel_usuario
 as
 begin try
 begin tran
-SELECT id_Nivel, P.id_Profesor,P.nombreProfesor FROM Profesor P 
-INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
-WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
+	SELECT id_Nivel, P.id_Profesor,P.nombreProfesor FROM Profesor P 
+	INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
+	WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
 commit
 end try
 begin catch
@@ -257,9 +257,9 @@ create proc ps_mostrar_id_profesor
 as
 begin try
 begin tran
-SELECT P.id_Profesor FROM Profesor P 
-INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
-WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
+	SELECT P.id_Profesor FROM Profesor P 
+	INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
+	WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
 commit
 end try
 begin catch
@@ -275,9 +275,9 @@ create proc ps_mostrar_nombre_profesor
 as
 begin try
 begin tran
-SELECT P.nombreProfesor, P.apellidoProfesor FROM Profesor P 
-INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
-WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
+	SELECT P.nombreProfesor, P.apellidoProfesor FROM Profesor P 
+	INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
+	WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
 commit
 end try
 begin catch
@@ -293,9 +293,9 @@ create proc ps_mostrar_foto_profesor
 as
 begin try
 begin tran
-SELECT P.fotoPerfilProfesor FROM Profesor P 
-INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
-WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
+	SELECT P.fotoPerfilProfesor FROM Profesor P 
+	INNER JOIN Usuario U ON p.id_Profesor = U.id_Profesor 
+	WHERE U.usuario = CAST(@usuario AS VARBINARY(100)) AND contra =  CAST(@contra AS VARBINARY(100)) AND id_Estado = 1
 commit
 end try
 begin catch
@@ -305,18 +305,18 @@ end catch;
 GO
 
 --Mostrar Alumnos
-create proc ps_mostrar_alumnos
+/*create proc ps_mostrar_alumnos
 as
 begin try
 begin tran
-SELECT * FROM Alumno
+	SELECT * FROM Alumno
 commit
 end try
 begin catch
 rollback
 print error_message()
 end catch;
-GO
+GO*/
 
 --Insertar grado
 create proc ps_insertar_grado
@@ -371,7 +371,7 @@ create proc ps_mostrar_grados
 as
 begin try
 begin tran
-SELECT id_Grado as [Num], nombreGrado as [Grado] FROM Grado
+	SELECT id_Grado as [Num], nombreGrado as [Grado] FROM Grado
 commit
 end try
 begin catch
@@ -386,8 +386,8 @@ create proc ps_buscar_grados
 as
 begin try
 begin tran
-SELECT id_Grado as [Num], nombreGrado as [Grado] FROM Grado
-WHERE nombreGrado LIKE ('%'+@nombreGrado+'%')
+	SELECT id_Grado as [Num], nombreGrado as [Grado] FROM Grado
+	WHERE nombreGrado LIKE ('%'+@nombreGrado+'%')
 commit
 end try
 begin catch
@@ -449,7 +449,8 @@ create proc ps_mostrar_secciones
 as
 begin try
 begin tran
-SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
+	SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
+commit
 end try
 begin catch
 rollback
@@ -463,8 +464,8 @@ create proc ps_buscar_secciones
 as
 begin try
 begin tran
-SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
-WHERE Seccion LIKE ('%'+@nombreSeccion+'%')
+	SELECT id_Seccion as [Num], Seccion as [Seccion] FROM Seccion
+	WHERE Seccion LIKE ('%'+@nombreSeccion+'%')
 commit
 end try
 begin catch
@@ -472,7 +473,6 @@ rollback
 print error_message()
 end catch;
 GO
-
 
 --Crear Materia
 create proc ps_insertar_materia
@@ -480,7 +480,7 @@ create proc ps_insertar_materia
 as 
 begin try
 begin tran
-INSERT INTO materia(nombreMateria) VALUES (@nombreMateria)
+	INSERT INTO materia(nombreMateria) VALUES (@nombreMateria)
 commit
 end try
 begin catch
@@ -490,20 +490,19 @@ end catch;
 GO
 
 
-
 --Mostrar materias
 create proc ps_mostrar_materias
 as
 begin try
 begin tran
-SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia
+	SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia
+commit
 end try
 begin catch
 rollback
 print error_message()
 end catch;
 GO
-
 
 --Modificar materias
 create proc ps_modificar_materia
@@ -542,7 +541,7 @@ create proc ps_buscar_materia
 as
 begin try
 begin tran
-SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia WHERE nombreMateria LIKE ('%'+@nombreMateria+'%')
+	SELECT id_Materia as [Num], nombreMateria as [Materia] FROM Materia WHERE nombreMateria LIKE ('%'+@nombreMateria+'%')
 commit
 end try
 begin catch
@@ -557,7 +556,7 @@ create proc ps_mostrar_ma
 as
 begin try
 begin tran
-SELECT * FROM Alumno
+	SELECT * FROM Alumno
 commit
 end try
 begin catch
@@ -571,7 +570,7 @@ create proc ps_leer_profesores
 as
 begin try
 begin tran
-SELECT CONCAT(nombreProfesor,' ',apellidoProfesor) as Profesor FROM Profesor
+	SELECT CONCAT(nombreProfesor,' ',apellidoProfesor) as Profesor FROM Profesor
 commit
 end try
 begin catch
@@ -585,7 +584,7 @@ create proc ps_leer_detalle_Grado
 as
 begin try
 begin tran
-select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
+	select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
 commit
 end try
 begin catch
@@ -601,7 +600,7 @@ create proc ps_obtener_idMateria
 as
 begin try
 begin tran
-SELECT id_Materia as Codigo FROM Materia WHERE nombreMateria = @nombreMateria
+	SELECT id_Materia as Codigo FROM Materia WHERE nombreMateria = @nombreMateria
 commit
 end try
 begin catch
@@ -616,7 +615,7 @@ create proc ps_mostrar_cursos
 as
 begin try
 begin tran
-SELECT CONCAT(g.nombreGrado, ' ', s.Seccion) as Curso, id_Detalle_Grado_Seccion from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion WHERE id_ProfesorEncargado= @id_Profesor
+	SELECT CONCAT(g.nombreGrado, ' ', s.Seccion) as Curso, id_Detalle_Grado_Seccion from Detalle_Grado_Seccion as dt INNER JOIN Grado as g on dt.id_Grado=g.id_Grado INNER JOIN Seccion as s on dt.id_Seccion=s.id_Seccion WHERE id_ProfesorEncargado= @id_Profesor
 commit
 end try
 begin catch
@@ -632,7 +631,7 @@ create proc ps_obtener_idProfesor
 as
 begin try
 begin tran
-SELECT id_Profesor as CodigoP FROM Profesor WHERE nombreProfesor = @nombreProfesor AND apellidoProfesor = @ApellidoProfesor
+	SELECT id_Profesor as CodigoP FROM Profesor WHERE nombreProfesor = @nombreProfesor AND apellidoProfesor = @ApellidoProfesor
 commit
 end try
 begin catch
@@ -650,7 +649,7 @@ create proc ps_insertar_curso
 as
 begin try
 begin tran
-INSERT INTO Curso (id_Detalle_Grado_Seccion, Id_Materia, Id_profesor) VALUES (@idDetalle, @idMateria, @idProfesor)
+	INSERT INTO Curso (id_Detalle_Grado_Seccion, Id_Materia, Id_profesor) VALUES (@idDetalle, @idMateria, @idProfesor)
 commit
 end try
 begin catch
@@ -665,10 +664,10 @@ create proc ps_mostrar_alumnos_nombres
 as
 begin try
 begin tran
-Select a.nombreAlumno as [Nombres], a.apellidoAlumno as [Apellidos], a.edadAlumno as Edad, a.NIE as [NIE], a.telefonoAlumno as [Telefono], a.fechaNacAlumno as [Fecha de nacimiento], a.NombrePapaAlumno as [Padre], a.NombreMamaAlumno
-as [Madre], a.NombreEncargadoAlumno as [Encargado] from Registro_Alumno as ra
-INNER JOIN Alumno as a ON ra.id_Alumno=a.id_Alumno
-INNER JOIN Detalle_Grado_Seccion as dt ON ra.id_Detalle_Grado_Seccion=dt.id_Detalle_Grado_Seccion WHERE dt.id_Detalle_Grado_Seccion=@grupo
+	Select a.nombreAlumno as [Nombres], a.apellidoAlumno as [Apellidos], a.edadAlumno as Edad, a.NIE as [NIE], a.telefonoAlumno as [Telefono], a.fechaNacAlumno as [Fecha de nacimiento], a.NombrePapaAlumno as [Padre], a.NombreMamaAlumno
+	as [Madre], a.NombreEncargadoAlumno as [Encargado] from Registro_Alumno as ra
+	INNER JOIN Alumno as a ON ra.id_Alumno=a.id_Alumno
+	INNER JOIN Detalle_Grado_Seccion as dt ON ra.id_Detalle_Grado_Seccion=dt.id_Detalle_Grado_Seccion WHERE dt.id_Detalle_Grado_Seccion=@grupo
 commit
 end try
 begin catch
@@ -683,7 +682,7 @@ create proc ps_mostrar_alumnos_curso
 as
 begin try
 begin tran
-SELECT id_Detalle_Grado_Seccion as Codigo FROM Detalle_Grado_Seccion d, Grado g, Seccion s WHERE g.id_Grado = d.id_Grado AND s.id_Seccion = d.id_Seccion AND g.nombreGrado = @nombreGrado AND  s.Seccion = @nombreSeccion
+	SELECT id_Detalle_Grado_Seccion as Codigo FROM Detalle_Grado_Seccion d, Grado g, Seccion s WHERE g.id_Grado = d.id_Grado AND s.id_Seccion = d.id_Seccion AND g.nombreGrado = @nombreGrado AND  s.Seccion = @nombreSeccion
 commit
 end try
 begin catch
@@ -836,7 +835,7 @@ create proc ps_leer_cursos
 as
 begin try
 begin tran
-SELECT c.id_Curso as Codigo_Curso, c.id_Detalle_Grado_Seccion as Codigo_Detalle, m.nombreMateria as Materia, CONCAT(p.nombreProfesor,' ',p.apellidoProfesor ) as Profesor FROM Curso c, Materia m, Profesor p WHERE m.id_Materia = c.id_Materia AND p.id_Profesor = c.id_Profesor
+	SELECT c.id_Curso as Codigo_Curso, c.id_Detalle_Grado_Seccion as Codigo_Detalle, m.nombreMateria as Materia, CONCAT(p.nombreProfesor,' ',p.apellidoProfesor ) as Profesor FROM Curso c, Materia m, Profesor p WHERE m.id_Materia = c.id_Materia AND p.id_Profesor = c.id_Profesor
 commit
 end try
 begin catch
@@ -852,15 +851,15 @@ create proc ps_mostrar_cursos_profesor
 as
 begin try
 begin tran
-select m.nombreMateria as [Materia],g.nombreGrado as [Grado], s.Seccion as [Sección], dt.anioEscolar as [Año Escolar], COUNT(Ra.id_Alumno) as [Cantidad de alumnos]
-from Curso as C 
-INNER JOIN Materia as M on C.id_Materia=M.id_Materia 
-INNER JOIN Profesor as P on P.id_Profesor=C.id_Profesor
-INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Detalle_Grado_Seccion
-INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
-INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
-INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Alumno
-WHERE p.id_Profesor=@id_Profesor and anioEscolar=@anio Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
+	select m.nombreMateria as [Materia],g.nombreGrado as [Grado], s.Seccion as [Sección], dt.anioEscolar as [Año Escolar], COUNT(Ra.id_Alumno) as [Cantidad de alumnos]
+	from Curso as C 
+	INNER JOIN Materia as M on C.id_Materia=M.id_Materia 
+	INNER JOIN Profesor as P on P.id_Profesor=C.id_Profesor
+	INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Detalle_Grado_Seccion
+	INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
+	INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
+	INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Alumno
+	WHERE p.id_Profesor=@id_Profesor and anioEscolar=@anio Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
 
 commit
 end try
@@ -877,15 +876,15 @@ create proc ps_buscar_grados_curso
 as
 begin try
 begin tran
-select m.nombreMateria as [Materia],g.nombreGrado as [Grado], s.Seccion as [Sección], dt.anioEscolar as [Año Escolar], COUNT(Ra.id_Alumno) as [Cantidad de alumnos]
-from Curso as C 
-INNER JOIN Materia as M on C.id_Materia=M.id_Materia 
-INNER JOIN Profesor as P on P.id_Profesor=C.id_Profesor
-INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Detalle_Grado_Seccion
-INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
-INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
-INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Alumno
-WHERE p.id_Profesor=@idprofesor and nombreGrado LIKE ('%'+@nombreGrado+'%') Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
+	select m.nombreMateria as [Materia],g.nombreGrado as [Grado], s.Seccion as [Sección], dt.anioEscolar as [Año Escolar], COUNT(Ra.id_Alumno) as [Cantidad de alumnos]
+	from Curso as C 
+	INNER JOIN Materia as M on C.id_Materia=M.id_Materia 
+	INNER JOIN Profesor as P on P.id_Profesor=C.id_Profesor
+	INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Detalle_Grado_Seccion
+	INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
+	INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
+	INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Alumno
+	WHERE p.id_Profesor=@idprofesor and nombreGrado LIKE ('%'+@nombreGrado+'%') Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
 commit
 end try
 begin catch
@@ -900,7 +899,7 @@ create proc ps_eliminar_curso
 as
 begin try
 begin tran
-DELETE FROM Curso WHERE id_Curso = @idCurso
+	DELETE FROM Curso WHERE id_Curso = @idCurso
 commit
 end try
 begin catch
@@ -917,7 +916,7 @@ create proc ps_modificar_curso
 as
 begin try
 begin tran
-UPDATE Curso  set id_Materia = @idMateria, id_Profesor = @idProfesor WHERE id_Curso = @idCurso
+	UPDATE Curso  set id_Materia = @idMateria, id_Profesor = @idProfesor WHERE id_Curso = @idCurso
 commit
 end try
 begin catch

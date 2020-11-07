@@ -1263,7 +1263,7 @@ create proc ps_matricular
 as
 begin try
 begin tran
-	INSERT INTO registro_alumno VALUES(@idDetalle, @idAlumno)
+	INSERT INTO registro_alumno(id_Detalle_Grado_Seccion, id_Alumno, estadoActivo) VALUES(@idDetalle, @idAlumno, 1)
 commit
 end try
 begin catch
@@ -1271,6 +1271,7 @@ rollback
 print error_message()
 end catch;
 GO
+
 
 
 --Mostrar alumnos NO matriculados 
@@ -1302,6 +1303,74 @@ print error_message()
 end catch;
 GO
 
-
+--Agregar id a tabla registro alumno (matricula)
 ALTER TABLE registro_alumno
 ADD idMatricula int identity(1,1) primary key
+
+--Mostrar registros de matricula
+create proc ps_leer_matriculas
+as
+begin try
+begin tran
+	SELECT CONCAT(g.nombreGrado, ' ',s.Seccion) as [Grupo], a.nombreAlumno as [Nombre], a.apellidoAlumno as [Apellido], a.id_Alumno as [Codigo], ra.idMatricula as [Codigo Matricula]
+	FROM Alumno a, Seccion s, detalle_Grado_seccion d, registro_alumno ra, Grado g
+	WHERE a.id_Alumno = ra.id_Alumno AND g.id_Grado = d.id_Grado AND s.id_Seccion = d.id_Seccion 
+	AND d.id_Detalle_Grado_Seccion = ra.id_Detalle_Grado_Seccion AND ra.estadoActivo = 1
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+
+--Actualizar matricula
+create proc ps_modificar_matricula
+@idDetalle int,
+@idMatricula int
+as
+begin try
+begin tran
+	UPDATE registro_alumno SET id_detalle_grado_seccion = @idDetalle WHERE idMatricula = @idMatricula
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Actualizar matricula
+create proc ps_dardeBaja
+@idAlumno int
+as
+begin try
+begin tran
+	UPDATE Alumno SET estadoMatricula = 0 WHERE id_Alumno = @idAlumno
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Actualizar matricula
+create proc ps_actualizar_estado_activo_matricula
+@idMatricula int
+as
+begin try
+begin tran
+	UPDATE registro_alumno SET estadoActivo = 0 WHERE idMatricula = @idMatricula
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Agregar estado de activo a matricula
+Alter table registro_alumno
+ADD estadoActivo int null

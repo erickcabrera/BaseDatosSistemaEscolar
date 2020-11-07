@@ -170,8 +170,10 @@ VALUES(1,1,1,'2021'),(1,2,1,'2021'),(1,3,1,'2021'),
 --TABLA REGISTRO_ALUMNO
 create table Registro_Alumno
 (
+	idMatricula int identity(1,1) primary key,
 	id_Detalle_Grado_Seccion int not null,
 	id_Alumno int not null,
+	estadoActivo int null,
 	--LLAVES SECUNDARIAS
 	CONSTRAINT fk_registroAlumno_detalleSeccion FOREIGN KEY(id_Detalle_Grado_Seccion) REFERENCES Detalle_Grado_Seccion(id_Detalle_Grado_Seccion),
 	CONSTRAINT fk_registroAlumno_alumno FOREIGN KEY(id_Alumno) REFERENCES Alumno(id_Alumno)
@@ -191,10 +193,10 @@ create table Curso
 	CONSTRAINT fk_detalleMateria_materia FOREIGN KEY(id_Materia) REFERENCES Materia(id_Materia),
 	CONSTRAINT fk_detalleMateria_profesor FOREIGN KEY(id_Profesor) REFERENCES Profesor(id_Profesor)
 );
-
+GO
 --CONSTRAINTS EN LA TABLA ALUMNO
 --Sería mejor hacer las restricciones directamente en las tablas
-ALTER TABLE Alumno
+/*ALTER TABLE Alumno
 ADD CONSTRAINT U_numPartida UNIQUE (numPartida)
 
 ALTER TABLE Alumno
@@ -207,7 +209,7 @@ ALTER TABLE Alumno
 
 ALTER TABLE Alumno
 ADD CONSTRAINT CK_edad
-CHECK (edadAlumno>=4)
+CHECK (edadAlumno>=4)**/
 
 
 
@@ -218,7 +220,7 @@ CHECK (edadAlumno>=4)
 	GO*/
 
 --CONSTRAINTS EN LA TABLA PROFESOR
-ALTER TABLE Profesor
+/*ALTER TABLE Profesor
 ADD CONSTRAINT U_NIT UNIQUE (NIT)
 
 ALTER TABLE Profesor
@@ -227,6 +229,7 @@ ADD CONSTRAINT U_DUI UNIQUE (DUI)
 ALTER TABLE Profesor
 ADD CONSTRAINT U_numE UNIQUE (numeroEscalafon)
 GO
+*/
 
 --PROCEDIMIENTOS ALMACENADOS
 --MOSTRAR NIVEL
@@ -638,25 +641,9 @@ print error_message()
 end catch;
 GO
 
-/*select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
-select * from grado
-select * from seccion
-select * from Profesor
-select * from Detalle_Grado_Seccion
-select * from curso
-insert into Detalle_Grado_Seccion(id_Grado, id_Seccion, id_ProfesorEncargado,anioEscolar) values(1,1,1,'2019')*/
 
-/*select d.id_Detalle_Grado_Seccion as Codigo,  CONCAT(p.nombreProfesor,' ',p.apellidoProfesor) as Profesor, g.nombreGrado as Grado, s.Seccion as Seccion, d.anioEscolar as Año from Grado g, Profesor p, Seccion s, Detalle_Grado_Seccion d WHERE g.id_Grado =d.id_Grado AND p.id_Profesor = d.id_ProfesorEncargado AND s.id_Seccion = d.id_Seccion 
-select * from grado
-select * from seccion
-select * from Profesor
-select * from Detalle_Grado_Seccion
-select * from curso
-
-insert into Detalle_Grado_Seccion(id_Grado, id_Seccion, id_ProfesorEncargado,anioEscolar) values(1,1,1,'2019')*/
-
---SELECT id_Detalle_Grado_Seccion as Codigo FROM Detalle_Grado_Seccion d, Grado g, Seccion s WHERE g.id_Grado = d.id_Grado AND s.id_Seccion = d.id_Seccion AND g.nombreGrado = 'SEPTIMO' AND  s.Seccion = 'A'
- create proc ps_insertar_curso
+--Insertar curso
+create proc ps_insertar_curso
 @idDetalle int,
 @idMateria int,
 @idProfesor int
@@ -1251,11 +1238,6 @@ print error_message()
 end catch;
 GO
 
---Eliminar check anioEscolar
-ALTER TABLE detalle_grado_seccion   
-DROP CONSTRAINT CK_anioEscolar
-GO  
-
 --Mostrar alumnos NO matriculados 
 create proc ps_matricular
 @idAlumno int ,
@@ -1271,8 +1253,6 @@ rollback
 print error_message()
 end catch;
 GO
-
-
 
 --Mostrar alumnos NO matriculados 
 create proc ps_actualizar_estado_matricula
@@ -1303,9 +1283,6 @@ print error_message()
 end catch;
 GO
 
---Agregar id a tabla registro alumno (matricula)
-ALTER TABLE registro_alumno
-ADD idMatricula int identity(1,1) primary key
 
 --Mostrar registros de matricula
 create proc ps_leer_matriculas
@@ -1371,6 +1348,3 @@ print error_message()
 end catch;
 GO
 
---Agregar estado de activo a matricula
-Alter table registro_alumno
-ADD estadoActivo int null

@@ -107,7 +107,8 @@ create table Alumno
 	CONSTRAINT fk_alumno_sexo FOREIGN KEY(id_Sexo) REFERENCES Sexo(id_Sexo),
 	CONSTRAINT fk_alumno_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
-
+ALTER TABLE Alumno
+ADD estadoMatricula int null 
 --TABLA MATERIA
 create table Materia
 (
@@ -1043,9 +1044,9 @@ create proc ps_insertar_alumno
 as 
 begin try
 begin tran
-	INSERT INTO Alumno(nombreAlumno,apellidoAlumno,numPartida,NIE,direccionAlumno,telefonoAlumno,fechaNacAlumno,fotoAlumno,NombrePapaAlumno,NombreMamaAlumno,NombreEncargadoAlumno,id_Sexo,edadAlumno, id_Estado)
+	INSERT INTO Alumno(nombreAlumno,apellidoAlumno,numPartida,NIE,direccionAlumno,telefonoAlumno,fechaNacAlumno,fotoAlumno,NombrePapaAlumno,NombreMamaAlumno,NombreEncargadoAlumno,id_Sexo,edadAlumno, id_Estado, estadoMatricula)
 	VALUES(@nombreAlumno,@apellidoAlumno,@numPartida,@NIE,@direccionAlumno,@telefonoAlumno,@fechaNacAlumno,@fotoAlumno,@NombrePapaAlumno,@NombreMamaAlumno,@NombreEncargadoAlumno, 
-	CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo)),(select (cast(datediff(dd,@fechaNacAlumno,GETDATE()) / 365.25 as int))),1);
+	CONVERT(INT,(select id_Sexo from Sexo where nombreSexo = @sexo)),(select (cast(datediff(dd,@fechaNacAlumno,GETDATE()) / 365.25 as int))),1,0);
 commit
 end try
 begin catch
@@ -1054,6 +1055,7 @@ print error_message()
 end catch;
 GO
 
+--drop procedure ps_insertar_alumno
 --Extraer foto de ALUMNO con ID
 create proc ps_extraer_foto_alumno
 @idAlumno varchar(20)
@@ -1214,4 +1216,60 @@ rollback
 print error_message()
 end catch;
 GO
+
+--Mostrar alumnos NO matriculados 
+create proc ps_mostrar_alumnos_noMatriculados
+as
+begin try
+begin tran
+	 SELECT id_Alumno as [Num], nombreAlumno as [Nombres],apellidoAlumno as [Apellidos], fechaNacAlumno,
+	 edadAlumno as [Edad], NIE as [NIE] , numPartida as [Num. Partida] FROM Alumno A
+	INNER JOIN Sexo S ON S.id_Sexo = A.id_Sexo
+	WHERE id_Estado = 1 AND estadoMatricula = 0
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar alumnos NO matriculados 
+create proc ps_mostrar_Grupos
+@anioActual int 
+as
+begin try
+begin tran
+	SELECT CONCAT(g.nombreGrado,' ',s.Seccion) AS [Grupo] 
+	FROM  Grado g, Seccion s, Detalle_Grado_Seccion d 
+	WHERE g.id_Grado = d.id_Grado AND s.id_Seccion = d.id_Seccion AND d.anioEscolar = @anioActual
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Eliminar check anioEscolar
+ALTER TABLE detalle_grado_seccion   
+DROP CONSTRAINT CK_anioEscolar
+GO  
+
+--Mostrar alumnos NO matriculados 
+create proc ps_matricular
+@idAlumno int ,
+@idDetalle int
+as
+begin try
+begin tran
+	INSERT INTO registro_alumno VALUES(@idDetalle, @idAlumno)
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
 

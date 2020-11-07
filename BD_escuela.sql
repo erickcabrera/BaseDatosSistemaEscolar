@@ -1273,3 +1273,35 @@ end catch;
 GO
 
 
+--Mostrar alumnos NO matriculados 
+create proc ps_actualizar_estado_matricula
+@idAlumno int 
+as
+begin try
+begin tran
+	UPDATE Alumno set estadoMatricula = 1 WHERE id_Alumno  = @idAlumno
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+--Mostrar alumnos NO matriculados 
+create proc ps_obtener_matricula
+as
+begin try
+begin tran
+	SELECT a.nombreAlumno, a.apellidoAlumno  FROM Alumno a, detalle_grado_seccion d, grado g, seccion s 
+commit
+end try
+begin catch
+rollback
+print error_message()
+end catch;
+GO
+
+
+ALTER TABLE registro_alumno
+ADD idMatricula int identity(1,1) primary key

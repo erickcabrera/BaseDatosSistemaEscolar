@@ -63,11 +63,10 @@ create table Profesor
 	CONSTRAINT fk_profesor_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
 
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','555',1,1,1);
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','fotosUsuarios\\PedroDiaz11425.png','444',2,1,1)
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('89789','11111','Juan','Perez',15,'San Salvador','45552','correo','01/01/2000','fotosUsuarios\\JuanPerez11425.png','888',1,1,1);
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotos\\JuanPerez11425.png','555',1,1,1);
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','fotos\\PedroDiaz11425.png','444',2,1,1)
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('89789','11111','Juan','Perez',15,'San Salvador','45552','correo','01/01/2000','fotos\\JuanPerez11425.png','888',1,1,1);
 select * from profesor	
-
 
 --TABLA USUARIO
 CREATE TABLE Usuario

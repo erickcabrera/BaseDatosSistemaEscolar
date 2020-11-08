@@ -80,8 +80,8 @@ CREATE TABLE Usuario
 );
 INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST('admin' AS VARBINARY(MAX)),CAST('123' AS VARBINARY(MAX)),1)
 INSERT INTO Usuario(usuario,contra,id_Profesor) VALUES( CAST('profesor' AS VARBINARY(MAX)),CAST('123' AS VARBINARY(MAX)),2)
-
 select * from Usuario
+
 --TABLA ALUMNO
 create table Alumno
 (
@@ -1345,4 +1345,3 @@ rollback
 print error_message()
 end catch;
 GO
-

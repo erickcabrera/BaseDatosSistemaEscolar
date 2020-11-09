@@ -50,7 +50,7 @@ create table Profesor
 	telefonoProfesor varchar(10) not null,
 	correoProfesor varchar(150) not null,
 	fechaNacProfesor date not null,
-	fotoPerfilProfesor varchar(200) not null,
+	fotoPerfilProfesor image,
 	numeroEscalafon varchar(20) not null,
 	id_Nivel int not null,
 	id_Sexo int not null,
@@ -63,9 +63,9 @@ create table Profesor
 	CONSTRAINT fk_profesor_estado FOREIGN KEY(id_Estado) REFERENCES Estado(id_Estado)
 );
 
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','fotos\\JuanPerez11425.png','555',1,1,1);
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','fotos\\PedroDiaz11425.png','444',2,1,1)
-INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('89789','11111','Juan','Perez',15,'San Salvador','45552','correo','01/01/2000','fotos\\JuanPerez11425.png','888',1,1,1);
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('11425','5555','Juan','Perez',15,'San Salvador','77777','correo','01/01/2000','foto','555',1,1,1);
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('23223','3222','Pedro','Diaz',15,'San Miguel','33333','correo','01/01/1990','foto','444',2,1,1)
+INSERT INTO Profesor(DUI,NIT,nombreProfesor,apellidoProfesor,edadProfesor,direccionProfesor,telefonoProfesor,correoProfesor,fechaNacProfesor,fotoPerfilProfesor,numeroEscalafon,id_Nivel,id_Sexo,id_Estado) VALUES('89789','11111','Juan','Perez',15,'San Salvador','45552','correo','01/01/2000','foto','888',1,1,1);
 select * from profesor	
 
 --TABLA USUARIO
@@ -97,7 +97,7 @@ create table Alumno
 	NombrePapaAlumno varchar(100) not null,
 	NombreMamaAlumno varchar(100) not null,
 	NombreEncargadoAlumno varchar(100) not null,
-	fotoAlumno varchar(200) not null,
+	fotoAlumno image not null,
 	id_Sexo int not null,
 	id_Estado int not null,
 	--LLAVE PRIMARIA
@@ -703,7 +703,7 @@ create proc ps_modificar_profesor
 @telefonoProfesor varchar(10),
 @correoProfesor varchar(150),
 @fechaNacProfesor date,
-@fotoPerfilProfesor varchar(200),
+@fotoPerfilProfesor image,
 @numeroEscalafon varchar(20),
 @sexo varchar(20))
 as
@@ -785,7 +785,7 @@ create proc ps_insertar_profesor
 @telefonoProfesor varchar(10),
 @correoProfesor varchar(150),
 @fechaNacProfesor date,
-@fotoPerfilProfesor varchar(200),
+@fotoPerfilProfesor image,
 @numeroEscalafon varchar(20),
 @sexo varchar(20))
 as 
@@ -936,7 +936,7 @@ create proc ps_modificar_alumno
 @direccionAlumno varchar(100),
 @telefonoAlumno varchar(10),
 @fechaNacAlumno date,
-@fotoAlumno varchar(200),
+@fotoAlumno image,
 @NombrePapaAlumno varchar(100),
 @NombreMamaAlumno varchar(100),
 @NombreEncargadoAlumno varchar(100),
@@ -1021,7 +1021,7 @@ create proc ps_insertar_alumno
 @direccionAlumno varchar(100),
 @telefonoAlumno varchar(10),
 @fechaNacAlumno date,
-@fotoAlumno varchar(200),
+@fotoAlumno image,
 @NombrePapaAlumno varchar(100),
 @NombreMamaAlumno varchar(100),
 @NombreEncargadoAlumno varchar(100),

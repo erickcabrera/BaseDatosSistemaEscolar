@@ -193,42 +193,6 @@ create table Curso
 	CONSTRAINT fk_detalleMateria_profesor FOREIGN KEY(id_Profesor) REFERENCES Profesor(id_Profesor)
 );
 GO
---CONSTRAINTS EN LA TABLA ALUMNO
---Sería mejor hacer las restricciones directamente en las tablas
-/*ALTER TABLE Alumno
-ADD CONSTRAINT U_numPartida UNIQUE (numPartida)
-
-ALTER TABLE Alumno
-ADD CONSTRAINT U_NIE UNIQUE (NIE)
-
-ALTER TABLE Alumno
-	ADD CONSTRAINT CK_fechaNac
-	CHECK (fechaNacAlumno<getdate());
-	GO
-
-ALTER TABLE Alumno
-ADD CONSTRAINT CK_edad
-CHECK (edadAlumno>=4)**/
-
-
-
---CONSTRAINTS TABLA DETALLE_GRADO_SECCION
-/*ALTER TABLE Detalle_Grado_Seccion
-	ADD CONSTRAINT CK_anioEscolar
-	CHECK (anioEscolar<year(getdate()));
-	GO*/
-
---CONSTRAINTS EN LA TABLA PROFESOR
-/*ALTER TABLE Profesor
-ADD CONSTRAINT U_NIT UNIQUE (NIT)
-
-ALTER TABLE Profesor
-ADD CONSTRAINT U_DUI UNIQUE (DUI)
-
-ALTER TABLE Profesor
-ADD CONSTRAINT U_numE UNIQUE (numeroEscalafon)
-GO
-*/
 
 --PROCEDIMIENTOS ALMACENADOS
 --MOSTRAR NIVEL

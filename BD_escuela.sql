@@ -589,12 +589,11 @@ GO
  
 --PS para obtener idProfesor 
 create proc ps_obtener_idProfesor
-@nombreProfesor varchar(20),
-@ApellidoProfesor varchar(20)
+@nombreProfesor varchar(200)
 as
 begin try
 begin tran
-	SELECT id_Profesor as CodigoP FROM Profesor WHERE nombreProfesor = @nombreProfesor AND apellidoProfesor = @ApellidoProfesor
+	SELECT id_Profesor as CodigoP FROM Profesor WHERE CONCAT(nombreProfesor,' ', apellidoProfesor) = @nombreProfesor 
 commit
 end try
 begin catch

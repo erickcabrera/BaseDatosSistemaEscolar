@@ -629,7 +629,7 @@ begin tran
 		Select a.nombreAlumno as [Nombres], a.apellidoAlumno as [Apellidos], a.edadAlumno as Edad, a.NIE as [NIE], a.telefonoAlumno as [Telefono], a.fechaNacAlumno as [Fecha de nacimiento], a.NombrePapaAlumno as [Padre], a.NombreMamaAlumno
 	as [Madre], a.NombreEncargadoAlumno as [Encargado] from Registro_Alumno as ra
 	INNER JOIN Alumno as a ON ra.id_Alumno=a.id_Alumno
-	INNER JOIN Detalle_Grado_Seccion as dt ON ra.id_Detalle_Grado_Seccion=dt.id_Detalle_Grado_Seccion WHERE dt.id_Detalle_Grado_Seccion=@grupo and idMatricula=1
+	INNER JOIN Detalle_Grado_Seccion as dt ON ra.id_Detalle_Grado_Seccion=dt.id_Detalle_Grado_Seccion WHERE dt.id_Detalle_Grado_Seccion=@grupo and estadoActivo=1
 commit
 end try
 begin catch

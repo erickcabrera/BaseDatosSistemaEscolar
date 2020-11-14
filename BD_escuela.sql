@@ -809,11 +809,11 @@ GO
 --Procedimiento para obtener los cursos de un profesor
 create proc ps_mostrar_cursos_profesor
 @id_Profesor int,
-@anio int
+@anio varchar(20)
 as
 begin try
 begin tran
-SELECT g.nombreGrado, s.Seccion,dt.anioEscolar
+	SELECT g.nombreGrado, s.Seccion,dt.anioEscolar
 	from Detalle_Grado_Seccion as dt
 	INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
 	INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion

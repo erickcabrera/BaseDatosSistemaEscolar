@@ -819,10 +819,10 @@ begin tran
 	INNER JOIN Materia as M on C.id_Materia=M.id_Materia 
 	INNER JOIN Profesor as P on P.id_Profesor=C.id_Profesor
 	INNER JOIN Detalle_Grado_Seccion  as DT on c.id_Detalle_Grado_Seccion=DT.id_Detalle_Grado_Seccion
-	INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
 	INNER JOIN Grado as G on dt.id_Grado=g.id_Grado
-	INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Alumno
-	WHERE p.id_Profesor=@id_Profesor and anioEscolar=@anio Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar 
+	INNER JOIN Registro_Alumno as Ra on dt.id_Detalle_Grado_Seccion=ra.id_Detalle_Grado_Seccion
+	INNER JOIN Seccion as S on DT.id_Seccion=s.id_Seccion
+	where p.id_Profesor=@id_Profesor and anioEscolar=@anio Group by m.nombreMateria,g.nombreGrado,s.Seccion,dt.anioEscolar
 
 commit
 end try
